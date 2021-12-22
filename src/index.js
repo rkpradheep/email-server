@@ -15,15 +15,64 @@ app.post("/mail", async (req, res) => {
     // const { token, product } = req.body;
     const EPD = JSON.parse(PDetails.data);
     var emails = email.data;
-    var HTML = `<h1 style="color:blue">TOTAL PRICE: <span style="color:green">${total.TOTAL}</span></h1>`;
-    HTML += EPD.map(
-      (val) => `
-            <b style="color:red"> PRODUCT NAME:<span style="color:green"> ${val.name}</span><br/></b>
-            <b style="color:red">PRODUCR PRICE: <span style="color:green"> ${val.price}</span><br/></b>
-            <b style="color:red">PRODUCT QUANTITY:<span style="color:green"> ${val.qty}</span></br></b>
-            <br/><br/>
-             `
-    ).join("");
+    var HTML = `<html>
+    <head>
+    <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+      font-size: larger;
+      text-align: center;
+      }
+  
+  td, th {
+      border: 2px solid #8f6797;
+      text-align: center;
+      vertical-align:center;
+      padding: 8px;
+  }
+  
+</style>  
+</head>
+
+                <body>
+                <h2 style="color:blue;text-align:center">YOUR PURCHASE DETAILS</h2>
+                <br/><br/>
+                <table style="margin:auto">
+                 <tr style="background-color: #ede2fa;">
+                 <th>PRODUCT NAME</th>
+                 <th>PRODUCT PRICE</th>
+                 <th>PRODUCT QUANTITY</th>
+                 </tr>
+    
+    `;
+    let i = 0;
+    HTML += EPD.map((val) => {
+      i++;
+      if (i % 2 !== 0) {
+        return `<tr style="background-color: #ede2fa;">
+                <td> ${val.name}</td>
+                <td> ${val.price}</td>
+                <td> ${val.qty}</td>
+                </tr>
+             `;
+      } else {
+        return `<tr style="background-color: #d0b8df">
+                  <td> ${val.name}</td>
+                  <td> ${val.price}</td>
+                  <td> ${val.qty}</td>
+                  </tr>
+               `;
+      }
+    }).join("");
+    HTML += `
+       <tr>
+       <td colspan="3" style='text-align:center; vertical-align:middle;font-weight:bold;color:green'>GRAND TOTAL : <span style="color:red">Rs.${total.TOTAL}</span></td>
+       </tr>
+       </table>
+       </body>
+       </html>`;
     var transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
