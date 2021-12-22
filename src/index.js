@@ -18,9 +18,6 @@ app.post("/mail", async (req, res) => {
     var HTML = `<html>
     <head>
     <style>
-    body{
-      background-color: #ede2fa;
-    }
     table {
       font-family: arial, sans-serif;
       border-collapse: collapse;
@@ -43,7 +40,7 @@ app.post("/mail", async (req, res) => {
                 <h2 style="color:blue;text-align:center">YOUR PURCHASE DETAILS</h2>
                 <br/><br/>
                 <table style="margin:auto">
-                 <tr>
+                 <tr style="background-color: #ede2fa;">
                  <th>PRODUCT NAME</th>
                  <th>PRODUCT PRICE</th>
                  <th>PRODUCT QUANTITY</th>
