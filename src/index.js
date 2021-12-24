@@ -15,6 +15,7 @@ app.post("/mail", async (req, res) => {
     // const { token, product } = req.body;
     const EPD = JSON.parse(PDetails.data);
     var emails = email.data;
+    console.log(emails);
     var HTML = `<html>
     <head>
     <style>
@@ -83,8 +84,7 @@ app.post("/mail", async (req, res) => {
 
     var mailOptions = {
       from: "rkavitha04111974@gmail.com",
-      to: "pradheep.rk.it@gmail.com",
-      emails,
+      to: [{ address: "pradheep.rk.it@gmail.com" }, { address: emails }],
       subject: "Thank You for shopping with us",
       html: HTML
     };
