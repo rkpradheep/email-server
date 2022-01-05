@@ -38,6 +38,8 @@ app.post("/mail", async (req, res) => {
 </head>
 
                 <body>
+                <h2 style="color:green;text-align:center">SHOPWITHINFOTIX</h2><br/><br/>
+                <p>We hope you enjoyed shopping with us</p><br/>
                 <h2 style="color:blue;text-align:center">YOUR PURCHASE DETAILS</h2>
                 <br/><br/>
                 <table style="margin:auto">
@@ -85,7 +87,7 @@ app.post("/mail", async (req, res) => {
     var mailOptions = {
       from: "rkavitha04111974@gmail.com",
       to: [{ address: "pradheep.rk.it@gmail.com" }, { address: emails }],
-      subject: "Thank You for shopping with us",
+      subject: "Thank You for shopping with shopwithinfotix",
       html: HTML
     };
 
@@ -101,4 +103,42 @@ app.post("/mail", async (req, res) => {
     res.send("failiure");
   }
 });
+
+app.post("/auth", async (req, res) => {
+  try {
+    const { OTP, email } = req.body;
+
+    var emails = email.data;
+    // console.log(emails);
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "rkavitha04111974@gmail.com",
+        pass: "kavi@12345678"
+      }
+    });
+
+    var mailOptions = {
+      from: "rkavitha04111974@gmail.com",
+      to: [{ address: "pradheep.rk.it@gmail.com" }, { address: emails }],
+      subject: "Account Authentication",
+      html: `
+      <p>Your OTP for account creation in shopwithinfotix
+      is <span style="font-weight:bold">${OTP.data}.</span> Thank you for choosing us. We hope you will enjoy shopping with us. Have a nice day.</p>
+      `
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.send(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        res.send("success");
+      }
+    });
+  } catch (error) {
+    res.send("failiure");
+  }
+});
+
 app.listen(8080);
