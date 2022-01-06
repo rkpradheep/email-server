@@ -140,5 +140,42 @@ app.post("/auth", async (req, res) => {
     res.send("failiure");
   }
 });
+app.post("/forgotPassword", async (req, res) => {
+  try {
+    const { password, email } = req.body;
+
+    var emails = email.data;
+
+    // console.log(emails);
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "rkavitha04111974@gmail.com",
+        pass: "kavi@12345678"
+      }
+    });
+
+    var mailOptions = {
+      from: "rkavitha04111974@gmail.com",
+      to: [{ address: emails }],
+      subject: "Password Request",
+      html: `
+      <p>Your password for shopwithinfotix account
+      is <span style="font-weight:bold">${password.data}.</span> If you wish, you can later reset your password in Account Settings menu.</p>
+      `
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        res.send(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        res.send("success");
+      }
+    });
+  } catch (error) {
+    res.send("failiure");
+  }
+});
 
 app.listen(8080);
